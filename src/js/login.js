@@ -71,6 +71,18 @@ form.addEventListener("submit", async (e) => {
     }
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
-    alert("Correo o contraseña incorrectos");
+    mostrarAlerta("Correo o contraseña incorrectos", "error");
   }
 });
+
+function mostrarAlerta(mensaje, tipo = "error") {
+  const alerta = document.getElementById("customAlert");
+  alerta.textContent = mensaje;
+  alerta.className = `alert ${tipo}`; // reset clases base
+  alerta.classList.add("mostrar"); // mostrar sin “brincar”
+
+  // Ocultar después de 3 segundos
+  setTimeout(() => {
+    alerta.classList.remove("mostrar");
+  }, 3000);
+}

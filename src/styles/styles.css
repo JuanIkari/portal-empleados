@@ -88,20 +88,48 @@ body::before {
   width: 300px;
 }
 
-/* Contenedores (Simulando las secciones de Nicepage) */
-.u-section-2, .u-section-3 { /* Adaptar a las clases de Nicepage si las conoces */
-    padding: 60px 0;
-    background-color: var(--color-fondo-claro);
+.alert {
+  position: fixed;
+  top: 25px;                     /* distancia desde el borde superior */
+  left: 50%;                     /* posición central */
+  transform: translateX(-50%);
+  min-width: 300px;              /* ancho mínimo */
+  max-width: 500px; 
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 1000;
+  animation: fadeIn 0.5s ease;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Tarjetas y Paneles (Login, Solicitud) */
-.u-form-container, .u-panel-card {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: var(--color-sombra-tarjeta); /* Sombra marcada */
-    margin: 20px auto;
-    max-width: 450px; /* Ancho típico de formularios */
+.alert.mostrar {
+  opacity: 1;
+  visibility: visible;
+}
+
+.alert.error {
+  background-color: rgba(229, 57, 53, 0.9); /* rojo */
+}
+
+.alert.success {
+  background-color: rgba(76, 175, 80, 0.9); /* verde */
+}
+
+.alert.oculto {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Títulos y Encabezados */
