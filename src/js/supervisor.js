@@ -50,7 +50,10 @@ onAuthStateChanged(auth, async (user) => {
 
   try {
     const empleadosRef = collection(db, "empleados");
-    const q = query(empleadosRef, where("email_supervisor", "==", supervisorEmail));
+    const q = query(
+      empleadosRef,
+      where("email_supervisor", "==", supervisorEmail)
+    );
     const empleadosSnapshot = await getDocs(q);
 
     if (empleadosSnapshot.empty) {
@@ -63,51 +66,85 @@ onAuthStateChanged(auth, async (user) => {
       const empleadoId = empleadoDoc.id;
       const solicitudes = empleadoData.solicitudes || [];
 
-      solicitudes.forEach((solicitud, index) => {
+      // Ordenar solicitudes por fecha (más reciente primero)
+      solicitudes.sort((a, b) => {
+        const fechaA = new Date(a.fechaSolicitud);
+        const fechaB = new Date(b.fechaSolicitud);
+        return fechaB - fechaA; // más reciente primero
+      });
+
+      solicitudes.forEach((solicitud) => {
         const card = document.createElement("div");
         card.className = "solicitud-card";
         card.innerHTML = `
           <div class="solicitud-header">
             <div class="solicitud-titulo">
               <i class="bi bi-person-circle"></i> ${solicitud.tipo.toUpperCase()}
-          </div>
+            </div>
             <i class="bi bi-trash3 trash-icon" title="Eliminar solicitud"></i>
           </div>
-          <p><i class="bi bi-person-fill"></i> <strong>Empleado:</strong> ${empleadoData.nombre || "Sin nombre"}</p>
-          <p><i class="bi bi-calendar-event"></i> <strong>Desde:</strong> ${solicitud.fechaInicio}</p>
-          <p><i class="bi bi-calendar-event"></i> <strong>Hasta:</strong> ${solicitud.fechaFin}</p>
-          <p><i class="bi bi-pencil-square"></i> <strong>Motivo:</strong> ${solicitud.motivo || "Sin motivo"}</p>
+          <p><i class="bi bi-person-fill"></i> <strong>Empleado:</strong> ${
+            empleadoData.nombre || "Sin nombre"
+          }</p>
+          <p><i class="bi bi-calendar-event"></i> <strong>Desde:</strong> ${
+            solicitud.fechaInicio
+          }</p>
+          <p><i class="bi bi-calendar-event"></i> <strong>Hasta:</strong> ${
+            solicitud.fechaFin
+          }</p>
+          <p><i class="bi bi-pencil-square"></i> <strong>Motivo:</strong> ${
+            solicitud.motivo || "Sin motivo"
+          }</p>
           <p class="estado-texto">
-            <i class="bi ${solicitud.estado === "aprobado"
-            ? "bi bi-check-lg"
-            : solicitud.estado === "rechazado"
-              ? "bi bi-x-lg"
-              : "bi bi-hourglass"
-          }"></i>
+            <i class="bi ${
+              solicitud.estado === "aprobado"
+                ? "bi-check-lg"
+                : solicitud.estado === "rechazado"
+                ? "bi-x-lg"
+                : ""
+            }"></i> 
           </p>
 
-          ${solicitud.estado === "pendiente"
-            ? `
-            <div class="botones-accion">
-              <button class="btn-aprobar"><i class="bi bi-check-lg"></i> Aprobar</button>
-              <button class="btn-rechazar"><i class="bi bi-x-lg"></i> Rechazar</button>
-            </div>`
-            : ""
+          ${
+            solicitud.estado === "pendiente"
+              ? `
+              <div class="botones-accion">
+                <button class="btn-aprobar"><i class="bi bi-check-lg"></i> Aprobar</button>
+                <button class="btn-rechazar"><i class="bi bi-x-lg"></i> Rechazar</button>
+              </div>`
+              : ""
           }
         `;
 
+        // 🗑️ Evento para eliminar solicitud
+        const eliminarIcon = card.querySelector(".trash-icon");
+        eliminarIcon.addEventListener("click", () =>
+          eliminarSolicitud(empleadoId, solicitud.id)
+        );
+
+        // ✅ Botones de aprobar/rechazar
         const aprobarBtn = card.querySelector(".btn-aprobar");
         const rechazarBtn = card.querySelector(".btn-rechazar");
 
         if (aprobarBtn) {
           aprobarBtn.addEventListener("click", () =>
-            actualizarEstadoSolicitud(empleadoId, index, "aprobado", empleadoData)
+            actualizarEstadoSolicitud(
+              empleadoId,
+              solicitud.id,
+              "aprobado",
+              empleadoData
+            )
           );
         }
 
         if (rechazarBtn) {
           rechazarBtn.addEventListener("click", () =>
-            actualizarEstadoSolicitud(empleadoId, index, "rechazado", empleadoData)
+            actualizarEstadoSolicitud(
+              empleadoId,
+              solicitud.id,
+              "rechazado",
+              empleadoData
+            )
           );
         }
 
@@ -120,8 +157,13 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ✅ Actualizar estado y enviar notificación
-async function actualizarEstadoSolicitud(empleadoId, index, nuevoEstado, empleadoData) {
+// ✅ Actualizar estado de una solicitud (usando solicitud.id)
+async function actualizarEstadoSolicitud(
+  empleadoId,
+  solicitudId,
+  nuevoEstado,
+  empleadoData
+) {
   try {
     const empleadoRef = doc(db, "empleados", empleadoId);
     const empleadoSnap = await getDoc(empleadoRef);
@@ -129,14 +171,17 @@ async function actualizarEstadoSolicitud(empleadoId, index, nuevoEstado, emplead
     if (!empleadoSnap.exists()) return;
 
     const solicitudes = empleadoSnap.data().solicitudes || [];
-    solicitudes[index].estado = nuevoEstado;
+    const solicitudIndex = solicitudes.findIndex((s) => s.id === solicitudId);
+    if (solicitudIndex === -1) return;
+
+    solicitudes[solicitudIndex].estado = nuevoEstado;
 
     await updateDoc(empleadoRef, { solicitudes });
 
     await enviarNotificacionEmail(
       empleadoData.correo,
       empleadoData.nombre,
-      solicitudes[index],
+      solicitudes[solicitudIndex],
       nuevoEstado
     );
 
@@ -147,7 +192,13 @@ async function actualizarEstadoSolicitud(empleadoId, index, nuevoEstado, emplead
   }
 }
 
-async function enviarNotificacionEmail(emailEmpleado, nombreEmpleado, solicitud, estado) {
+// ✉️ Enviar notificación por correo
+async function enviarNotificacionEmail(
+  emailEmpleado,
+  nombreEmpleado,
+  solicitud,
+  estado
+) {
   try {
     const templateParams = {
       to_email: emailEmpleado,
@@ -158,12 +209,44 @@ async function enviarNotificacionEmail(emailEmpleado, nombreEmpleado, solicitud,
       estado: estado.toUpperCase(),
       message:
         estado === "aprobado"
-          ? "tu solicitud ha sido aprobada por tu supervisor. 👍"
-          : "tu solicitud ha sido rechazada por tu supervisor. 🚨",
+          ? "Tu solicitud ha sido aprobada por tu supervisor. 👍"
+          : "Tu solicitud ha sido rechazada por tu supervisor. 🚨",
     };
 
     await emailjs.send("service_bgm9yi5", "template_tctlr7j", templateParams);
   } catch (error) {
     console.error("Error al enviar notificación por correo:", error);
+  }
+}
+
+// 🗑️ Eliminar solicitud por ID
+async function eliminarSolicitud(empleadoId, solicitudId) {
+  const confirmacion = confirm("¿Seguro que deseas eliminar esta solicitud?");
+  if (!confirmacion) return;
+
+  try {
+    const empleadoRef = doc(db, "empleados", empleadoId);
+    const empleadoSnap = await getDoc(empleadoRef);
+
+    if (!empleadoSnap.exists()) return;
+
+    const solicitudes = empleadoSnap.data().solicitudes || [];
+    const solicitudIndex = solicitudes.findIndex((s) => s.id === solicitudId);
+    if (solicitudIndex === -1) return;
+
+    const solicitud = solicitudes[solicitudIndex];
+
+    if (solicitud.estado === "pendiente") {
+      alert("No puedes eliminar una solicitud pendiente.");
+      return;
+    }
+
+    solicitudes.splice(solicitudIndex, 1);
+    await updateDoc(empleadoRef, { solicitudes });
+
+    alert("Solicitud eliminada correctamente.");
+    location.reload();
+  } catch (error) {
+    console.error("Error al eliminar solicitud:", error);
   }
 }

@@ -88,6 +88,7 @@ form.addEventListener("submit", async (e) => {
 
     // 🧾 Crear la solicitud
     const solicitud = {
+      id: Date.now().toString(),
       tipo,
       fechaInicio,
       fechaFin,
@@ -151,16 +152,20 @@ async function cargarHistorial(correoEmpleado) {
     solicitudes.forEach((solicitud) => {
       const estado =
         solicitud.estado === "aprobado"
-        ? { icon: "bi bi-check-lg", color: "#4CAF50", texto: "Aprobado" }
-        : solicitud.estado === "rechazado"
-        ? { icon: "bi bi-x-lg", color: "red", texto: "Rechazado" }
-        : { icon: "bi bi-hourglass", color: "orange", texto: "Pendiente" };
+          ? { icon: "bi bi-check-lg", color: "#4CAF50", texto: "Aprobado" }
+          : solicitud.estado === "rechazado"
+          ? { icon: "bi bi-x-lg", color: "red", texto: "Rechazado" }
+          : { icon: "bi bi-hourglass", color: "orange", texto: "Pendiente" };
 
       const li = document.createElement("li");
       li.innerHTML = `
         <strong>${solicitud.tipo.toUpperCase()}</strong><br>
-        <i class="bi bi-calendar-event" style="padding: 5px; font-size: 1.25rem"></i> ${solicitud.fechaInicio} → ${solicitud.fechaFin}<br>
-        <i class="bi bi-chat-left-text" style="padding: 5px; font-size: 1.25rem"></i> ${solicitud.motivo || "Sin motivo"}<br>
+        <i class="bi bi-calendar-event" style="padding: 5px; font-size: 1.25rem"></i> ${
+          solicitud.fechaInicio
+        } → ${solicitud.fechaFin}<br>
+        <i class="bi bi-chat-left-text" style="padding: 5px; font-size: 1.25rem"></i> ${
+          solicitud.motivo || "Sin motivo"
+        }<br>
         
         <div class="estado-icono" title="${estado.texto}">
           <i class="${estado.icon}" style="font-size:1.5rem;"></i>
