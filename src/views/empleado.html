@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal del Empleado</title>
+    <link rel="stylesheet" href="/src/styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Portal del Empleado</h1>
+      <button id="logoutBtn">Cerrar sesión</button>
+    </header>
+
+    <main>
+      <section id="solicitud-section">
+        <h2>Solicitar permiso</h2>
+        <form id="solicitudForm">
+          <label for="tipo">Tipo de permiso:</label>
+          <select id="tipo" required>
+            <option value="">Seleccione una opción</option>
+            <option value="vacaciones">Vacaciones</option>
+            <option value="licencia">Licencia</option>
+            <option value="Otro">Otro</option>
+          </select>
+
+          <label for="fechaInicio">Fecha de inicio:</label>
+          <input type="date" id="fechaInicio" required />
+
+          <label for="fechaFin">Fecha de fin:</label>
+          <input type="date" id="fechaFin" required />
+
+          <label for="motivo">Motivo (opcional):</label>
+          <textarea id="motivo" rows="3"></textarea>
+
+          <button type="submit">Enviar solicitud</button>
+        </form>
+      </section>
+
+      <section id="historial-section">
+        <h2>Historial de solicitudes</h2>
+        <ul id="historial"></ul>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="module" src="/js/empleado.js"></script>
+  </body>
+</html>
