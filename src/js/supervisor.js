@@ -185,7 +185,8 @@ async function actualizarEstadoSolicitud(
       nuevoEstado
     );
 
-    alert(`Solicitud ${nuevoEstado} correctamente.`);
+    /*alert(`Solicitud ${nuevoEstado} correctamente.`);*/
+    mostrarAlerta(`Solicitud ${nuevoEstado} correctamente`, "success")
     location.reload();
   } catch (error) {
     console.error("Error al actualizar el estado:", error);
@@ -237,16 +238,31 @@ async function eliminarSolicitud(empleadoId, solicitudId) {
     const solicitud = solicitudes[solicitudIndex];
 
     if (solicitud.estado === "pendiente") {
-      alert("No puedes eliminar una solicitud pendiente.");
+      /*alert("No puedes eliminar una solicitud pendiente.");*/
+      mostrarAlerta("No puedes eliminar una solicitud pendiente", "warning")
       return;
     }
 
     solicitudes.splice(solicitudIndex, 1);
     await updateDoc(empleadoRef, { solicitudes });
 
-    alert("Solicitud eliminada correctamente.");
+    /*alert("Solicitud eliminada correctamente.");*/
+    mostrarAlerta("Solicitud eliminada correctamente.", "success");
     location.reload();
   } catch (error) {
     console.error("Error al eliminar solicitud:", error);
   }
+}
+
+function mostrarAlerta(mensaje, tipo = "error") {
+  const alerta = document.getElementById("customAlert");
+  alerta.textContent = mensaje;
+  alerta.className = `alert ${tipo}`; // reset clases base
+  alerta.classList.add("mostrar"); // mostrar sin “brincar”
+
+  // Ocultar después de 3 segundos
+  setTimeout(() => {
+    alerta.classList.remove("mostrar");
+    location.reload()
+  }, 3000);
 }
