@@ -115,16 +115,23 @@ body::before {
   visibility: visible;
 }
 
+.alert.oculto {
+  display: none;
+}
+
+.alert.warning {
+  background-color: rgba(255, 193, 7, 0.85); /* amarillo translúcido */
+  color: #222;                               /* texto oscuro para contraste */
+  border: 1px solid rgba(255, 193, 7, 0.9);  /* borde sutil */
+  font-weight: 600;
+}
+
 .alert.error {
   background-color: rgba(229, 57, 53, 0.9); /* rojo */
 }
 
 .alert.success {
   background-color: rgba(76, 175, 80, 0.9); /* verde */
-}
-
-.alert.oculto {
-  display: none;
 }
 
 @keyframes fadeIn {

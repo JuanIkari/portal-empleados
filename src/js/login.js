@@ -52,7 +52,7 @@ form.addEventListener("submit", async (e) => {
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
-      alert("No se encontró información del usuario en la base de datos.");
+      mostrarAlerta("No se encontró información del usuario en la base de datos.", "warning");
       return;
     }
 
@@ -67,7 +67,7 @@ form.addEventListener("submit", async (e) => {
     } else if (userData.rol === "rrhh") {
       window.location.href = "/rrhh";
     } else {
-      alert("Rol desconocido. Contacta al administrador.");
+      mostrarAlerta("Rol desconocido, contacta al administrador", "warning");
     }
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
