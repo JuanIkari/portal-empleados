@@ -1,0 +1,136 @@
+/* Variables de Color (Azul Profesional y Acento de Éxito) */
+:root {
+    --color-principal: 15,38,60;       /* Azul oscuro */
+    --color-acento: #4CAF50;          /* Verde de éxito/aprobación */
+    --color-fondo-claro: #f4f6f9;     /* Fondo de contenedores */
+    --color-sombra-tarjeta: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Base y Tipografía */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;  /* Usamos una fuente común de Nicepage */
+    /* background-image: url("../img/ye.png"); */
+    background-repeat: no-repeat;    /* No repetir la imagen */
+    background-size: cover;          /* Que cubra todo el fondo */
+    background-position: center;     /* Centrada */
+    background-attachment: fixed;
+    background-color: #352B64;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/ye.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.6); /* 🔹 Oscurece el fondo (0.6 = 60% de brillo) */
+  opacity: 0.8;            /* 🔹 Controla la transparencia */
+  z-index: -1;             /* 🔹 Envía la capa detrás del contenido */
+}
+
+.login-container {
+  background-color: rgba(var(--color-principal),0.5);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  height: 450px;
+  width: 400px;
+
+  display: flex;
+  flex-direction: column;      /* ordena elementos en columna */
+  justify-content: center;     /* centra verticalmente */
+  align-items: center;         /* centra horizontalmente */
+  text-align: center;
+}
+
+/* Inputs */
+.login-container input {
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+/* Botón */
+.login-container button {
+  background-color: var(--color-acento);
+  color: white;
+  border: none;
+  padding: 0.7rem;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-container img {
+  width: 350px;     
+  height: auto;     
+  margin-bottom: 1rem; 
+}
+
+#loginForm {
+  width: 300px;
+}
+
+/* Contenedores (Simulando las secciones de Nicepage) */
+.u-section-2, .u-section-3 { /* Adaptar a las clases de Nicepage si las conoces */
+    padding: 60px 0;
+    background-color: var(--color-fondo-claro);
+}
+
+/* Tarjetas y Paneles (Login, Solicitud) */
+.u-form-container, .u-panel-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--color-sombra-tarjeta); /* Sombra marcada */
+    margin: 20px auto;
+    max-width: 450px; /* Ancho típico de formularios */
+}
+
+/* Títulos y Encabezados */
+h2 {
+    color: var(--color-fondo-claro);
+    font-weight: 600;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-acento); /* Línea de acento */
+    padding-bottom: 10px;
+}
+
+/* Inputs de Formulario (Email, Contraseña, Fechas) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--color-acento);
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Sombra de enfoque con color de acento */
+    outline: none;
+}

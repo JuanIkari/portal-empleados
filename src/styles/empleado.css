@@ -1,0 +1,192 @@
+/* ======== ESTILOS GENERALES ======== */
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("../img/ye.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  color: #fff;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* ======== ENCABEZADO ======== */
+header {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+header img {
+  width: 200px;
+  height: auto;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+header button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+header button:hover {
+  background-color: #357a38;
+}
+
+/* ======== CONTENEDOR PRINCIPAL ======== */
+
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap; /* permite que se apilen en pantallas pequeñas */
+  gap: 2rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* ======== SECCIONES ======== */
+
+section {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  color: #fff;
+
+  width: 400px;
+  height: 575px;       
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+/* ======== FORMULARIO ======== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex-grow: 1;
+}
+
+label {
+  font-weight: 500;
+}
+
+input, select, textarea {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+textarea {
+  resize: none;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #357a38;
+}
+
+/* ======== HISTORIAL ======== */
+
+#historial {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;       /* ocupa el espacio disponible */
+  overflow-y: auto;   /* scroll vertical */
+  overflow-x: hidden;
+}
+
+/* Opcional: estilo del scroll */
+#historial::-webkit-scrollbar {
+  width: 8px;
+}
+#historial::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 2px;
+  border-radius: 4px;
+}
+#historial::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#historial li {
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.solicitud-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.estado-icono {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 850px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  section {
+    width: 90%;
+    height: 575px;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
