@@ -111,11 +111,11 @@ form.addEventListener("submit", async (e) => {
       correo_supervisor: empleadoData.email_supervisor,
     });
 
-    alert("Solicitud enviada y notificación enviada al supervisor ✅");
+    mostrarAlerta("Solicitud enviada con éxito.", "success");
     form.reset();
   } catch (error) {
     console.error("Error al enviar la solicitud:", error);
-    alert("Error al enviar la solicitud.");
+    mostrarAlerta("Error al enviar la solicitud", "error");
   }
 });
 
@@ -178,4 +178,17 @@ async function cargarHistorial(correoEmpleado) {
     console.error("Error al cargar el historial:", error);
     historialUl.innerHTML = "<li>Error al cargar el historial.</li>";
   }
+}
+
+function mostrarAlerta(mensaje, tipo = "error") {
+  const alerta = document.getElementById("customAlert");
+  alerta.textContent = mensaje;
+  alerta.className = `alert ${tipo}`; // reset clases base
+  alerta.classList.add("mostrar"); // mostrar sin “brincar”
+
+  // Ocultar después de 3 segundos
+  setTimeout(() => {
+    location.reload()
+    alerta.classList.remove("mostrar");
+  }, 3000);
 }
