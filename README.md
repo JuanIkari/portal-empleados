@@ -1,6 +1,6 @@
 ## Descripción del Proyecto
 
-La presente solución fue desarrollada como parte del Reto Empresarial de Comfachocó, con el objetivo de simplificar, automatizar y humanizar la gestión del tiempo laboral dentro de la organización.
+La presente solución fue desarrollada con el objetivo de simplificar, automatizar y humanizar la gestión del tiempo laboral dentro de la organización laboral.
 
 La aplicación permite la autogestión del empleado mediante una plataforma web moderna y accesible, desde la cual los trabajadores pueden enviar y administrar solicitudes laborales —como permisos, licencias o vacaciones— de forma directa, sin necesidad de intermediación por parte del área de Recursos Humanos. 
 
